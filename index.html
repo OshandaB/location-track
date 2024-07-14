@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
   <title>Get Current Location</title>
@@ -62,6 +62,86 @@
 
     // Initial call to get location on page load
     getLocation();
+  </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PWA Geolocation</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <h1>Get Current Location</h1>
+  <button onclick="getLocation()">Get Location</button>
+  <p id="demo"></p>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((error) => {
+          alert('Service Worker registration failed:', error)
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        });
+      } else {
+        document.getElementById("demo").innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+
+    function showPosition(position) {
+      document.getElementById("demo").innerHTML = "Latitude: " + position.coords.latitude +
+        "<br>Longitude: " + position.coords.longitude +
+        "<br>Accuracy: " + position.coords.accuracy + " meters" +
+        "<br>Timestamp: " + new Date(position.timestamp);
+      console.log("Position obtained:", position);
+    }
+
+    function showError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          document.getElementById("demo").innerHTML = "User denied the request for Geolocation.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          document.getElementById("demo").innerHTML = "Location information is unavailable.";
+          break;
+        case error.TIMEOUT:
+          document.getElementById("demo").innerHTML = "The request to get user location timed out.";
+          break;
+        case error.UNKNOWN_ERROR:
+          document.getElementById("demo").innerHTML = "An unknown error occurred.";
+          break;
+      }
+      console.error("Geolocation error:", error);
+    }
+
+    // Manually trigger background sync for demo purposes
+    function triggerSync() {
+      if ('serviceWorker' in navigator && 'SyncManager' in window) {
+        navigator.serviceWorker.ready.then((registration) => {
+          return registration.sync.register('getLocationSync');
+        }).then(() => {
+          console.log('Sync registered');
+        }).catch((error) => {
+          console.error('Sync registration failed:', error);
+        });
+      }
+    }
+
+    // Trigger sync every 2 minutes
+    setInterval(triggerSync, 120000);
   </script>
 </body>
 </html>
