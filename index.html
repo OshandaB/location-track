@@ -1,9 +1,23 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>Get Current Location</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    #demo {
+      margin-top: 20px;
+    }
+  </style>
+</head>
 <body>
   <h1>Get Current Location</h1>
-  <button onclick="getLocation()">Get Location</button>
-  <p id="demo"></p>
+  <p id="demo">Fetching location...</p>
   <script>
     function getLocation() {
       if (navigator.geolocation) {
@@ -45,7 +59,9 @@
 
     // Automatically get location every 2 minutes (120000 milliseconds)
     setInterval(getLocation, 120000);
+
+    // Initial call to get location on page load
+    getLocation();
   </script>
 </body>
 </html>
-

@@ -1,0 +1,16 @@
+{
+    "name": "PWA Geolocation",
+    "short_name": "GeoPWA",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "description": "A PWA to get user location in the background.",
+    "icons": [
+      {
+        "src": "icon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ]
+  }
+  
